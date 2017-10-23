@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Hangman</string>
+    <string name="NewGame">New Game</string>
+    <string name="GameName">Hangman</string>
+    <string name="ViewScore">View Score</string>
+    <string name="SubmitGuess">Guess</string>
+    <string name="InitialGuess" />
+    <string name="InitialGuessedWord" />
+    <string name="GameInProgressStatus" />
+    <string name="ScoreboardTitle">Scoreboard</string>
+</resources>
