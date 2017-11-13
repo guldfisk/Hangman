@@ -8,4 +8,8 @@
     <string name="InitialGuessedWord" />
     <string name="GameInProgressStatus" />
     <string name="ScoreboardTitle">Scoreboard</string>
+    <string name="YouLost">You lost, the word was: %s</string>
+    <string name="YouWon">You won! %d wrong guesses.</string>
+    <string name="WinInformation">You won!</string>
+    <string name="Ok">OK</string>
 </resources>

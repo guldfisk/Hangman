@@ -2,10 +2,8 @@ package dk.hardcorefight.hangman;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
-
-import java.io.IOException;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class Scoreboard extends AppCompatActivity {
 
@@ -16,14 +14,11 @@ public class Scoreboard extends AppCompatActivity {
 
         Scorelist scorelist = new Scorelist(this);
 
-        StringBuilder stringBuilder = new StringBuilder();
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.list_item_layout, scorelist.sortedScores());
 
-        for (Integer score : scorelist.sortedScores()) {
-            stringBuilder.append(score);
-            stringBuilder.append("\n");
-        }
+        ListView listView = (ListView) this.findViewById(R.id.ScoreboardList);
 
-        ((TextView) findViewById(R.id.ScoresView)).setText(stringBuilder.toString());
+        listView.setAdapter(adapter);
 
     }
 }
