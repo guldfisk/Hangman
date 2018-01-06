@@ -1,10 +1,13 @@
-package dk.hardcorefight.hangman;
+package dk.hardcorefight.hangman.Game;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import dk.hardcorefight.hangman.Menu.MenuActivity;
+import dk.hardcorefight.hangman.R;
 
 public class PostGame extends AppCompatActivity implements View.OnClickListener{
 
@@ -22,7 +25,7 @@ public class PostGame extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        Intent i = new Intent(PostGame.this, Menu.class);
+        Intent i = new Intent(PostGame.this, MenuActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(i);
     }

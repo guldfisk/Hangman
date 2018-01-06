@@ -1,4 +1,4 @@
-package dk.hardcorefight.hangman;
+package dk.hardcorefight.hangman.Scoreboard;
 
 import android.content.Context;
 
@@ -16,24 +16,24 @@ public class Scorelist {
     private static final String filename = "scorelist";
     private Set<Integer> scores;
 
-    Scorelist() {
+    public Scorelist() {
         this.scores = new HashSet<>();
     }
 
-    Scorelist(Context context) {
+    public Scorelist(Context context) {
         this.scores = new HashSet<>();
         this.context = context;
 
         try {
             BufferedReader fileReadStream = new BufferedReader(
-                    new InputStreamReader(
-                            context.openFileInput(Scorelist.filename)
-                    )
+                new InputStreamReader(
+                    context.openFileInput(Scorelist.filename)
+                )
             );
             String line;
             while ((line = fileReadStream.readLine()) != null) {
                 this.scores.add(
-                        Integer.parseInt(line)
+                    Integer.parseInt(line)
                 );
             }
         } catch (IOException e) {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hangman</string>
+    <string name="app_name">Magic Hangman</string>
     <string name="NewGame">New Game</string>
     <string name="GameName">Hangman</string>
     <string name="ViewScore">View Score</string>
@@ -12,4 +12,8 @@
     <string name="YouWon">You won! %d wrong guesses.</string>
     <string name="WinInformation">You won!</string>
     <string name="Ok">OK</string>
+    <string name="SelectRandomCard">Random Card</string>
+    <string name="PickCard">Pick Card</string>
+    <string name="CardName">Card Name</string>
+    <string name="Search">Search</string>
 </resources>

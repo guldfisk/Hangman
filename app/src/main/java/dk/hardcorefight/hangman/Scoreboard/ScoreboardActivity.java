@@ -1,11 +1,13 @@
-package dk.hardcorefight.hangman;
+package dk.hardcorefight.hangman.Scoreboard;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class Scoreboard extends AppCompatActivity {
+import dk.hardcorefight.hangman.R;
+
+public class ScoreboardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +18,7 @@ public class Scoreboard extends AppCompatActivity {
 
         ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.list_item_layout, scorelist.sortedScores());
 
-        ListView listView = (ListView) this.findViewById(R.id.ScoreboardList);
+        ListView listView = this.findViewById(R.id.ScoreboardList);
 
         listView.setAdapter(adapter);
 
