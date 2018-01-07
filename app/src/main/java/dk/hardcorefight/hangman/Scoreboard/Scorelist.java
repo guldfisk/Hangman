@@ -6,8 +6,10 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Scorelist {
@@ -16,9 +18,6 @@ public class Scorelist {
     private static final String filename = "scorelist";
     private Set<Integer> scores;
 
-    public Scorelist() {
-        this.scores = new HashSet<>();
-    }
 
     public Scorelist(Context context) {
         this.scores = new HashSet<>();
@@ -46,24 +45,31 @@ public class Scorelist {
         return scores;
     }
 
-    public void addScore(Integer score) {
+    public Scorelist addScore(Integer score) {
         this.scores.add(score);
+        return this;
     }
 
-    public Integer[] sortedScores(){
+    public List<Integer> sortedScores(){
         Integer[] values = new Integer[this.scores.size()];
         this.scores.toArray(values);
         Arrays.sort(values);
-        return values;
+        return new ArrayList<>(Arrays.asList(values));
     }
 
-    public void save() throws IOException {
+    public Scorelist save() throws IOException {
         FileOutputStream fileStream = this.context.openFileOutput(Scorelist.filename, Context.MODE_PRIVATE);
         for (Integer score : this.scores) {
             fileStream.write(
-                    (score.toString() + "\n").getBytes()
+                (score.toString() + "\n").getBytes()
             );
         }
         fileStream.close();
+        return this;
+    }
+
+    public Scorelist clear() {
+        this.scores.clear();
+        return this;
     }
 }

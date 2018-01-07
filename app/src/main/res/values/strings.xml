@@ -8,12 +8,18 @@
     <string name="InitialGuessedWord" />
     <string name="GameInProgressStatus" />
     <string name="ScoreboardTitle">Scoreboard</string>
-    <string name="YouLost">You lost, the word was: %s</string>
-    <string name="YouWon">You won! %d wrong guesses.</string>
+    <string name="YouLost">You lost, the card was: %1$s</string>
     <string name="WinInformation">You won!</string>
     <string name="Ok">OK</string>
     <string name="SelectRandomCard">Random Card</string>
     <string name="PickCard">Pick Card</string>
     <string name="CardName">Card Name</string>
     <string name="Search">Search</string>
+    <string name="DefaultPostGameText">The game has ended!</string>
+    <string name="Empty" />
+    <string name="YouWon">Congratulations, you won!</string>
+    <string name="NewHighscore">New highscore: %1$s</string>
+    <string name="ResetScores">Reset Scores</string>
+    <string name="ResetHighscoreConfirmTitle">Reset Highscores</string>
+    <string name="ResetHighscoreConfirmBody">Are you sure?</string>
 </resources>

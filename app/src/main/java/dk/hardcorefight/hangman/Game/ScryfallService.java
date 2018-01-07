@@ -3,6 +3,7 @@ package dk.hardcorefight.hangman.Game;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.volley.Request;
@@ -25,6 +26,7 @@ public class ScryfallService {
 
     private static final String randomEndpoint = "https://api.scryfall.com/cards/random";
     private static final String autoCompleteEndpoint = "https://api.scryfall.com/cards/autocomplete";
+    private static final String printingEndpoint = "https://api.scryfall.com/cards/named";
 
     private RequestQueue queue;
 
@@ -58,12 +60,7 @@ public class ScryfallService {
                     }
                 }
             },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    errorListener.onErrorResponse(error);
-                }
-            }
+            errorListener
         );
 
         this.queue.add(
@@ -81,7 +78,7 @@ public class ScryfallService {
     ) {
         JsonRequest jsonRequest = new JsonObjectRequest(
             Request.Method.GET,
-            autoCompleteEndpoint+"/?q="+query,
+            autoCompleteEndpoint+"/?q="+query.replace(" ", "%20"),
             null,
             new Response.Listener<JSONObject>() {
                 @Override
@@ -96,6 +93,40 @@ public class ScryfallService {
                         wrongPrintingFieldsListener.onError(e);
                     }
                     listener.onResponse(names);
+                }
+            },
+            errorListener
+        );
+        this.queue.add(jsonRequest);
+        return jsonRequest;
+    }
+
+    public JsonRequest getPrinting(
+            String name,
+            final Response.Listener<Printing> listener,
+            final Response.ErrorListener errorListener,
+            final WrongPrintingFieldsListener wrongPrintingFieldsListener
+    ) {
+        JsonRequest jsonRequest = new JsonObjectRequest(
+            Request.Method.GET,
+            printingEndpoint+"/?exact="+name.replace(" ", "%20"),
+            null,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        Log.e("apiservice", response.toString());
+                        listener.onResponse(
+                            new Printing(
+                                response.getString("name"),
+                                response.getString("set_name"),
+                                response.getString("set"),
+                                response.getJSONObject("image_uris").getString("art_crop")
+                            )
+                        );
+                    } catch (JSONException e) {
+                        wrongPrintingFieldsListener.onError(e);
+                    }
                 }
             },
             errorListener

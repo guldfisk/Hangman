@@ -1,109 +1,118 @@
 package dk.hardcorefight.hangman.Game;
 
-import android.content.Context;
-import android.net.Uri;
+import android.annotation.SuppressLint;
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import java.io.IOException;
+
+import dk.hardcorefight.hangman.Menu.MenuActivity;
 import dk.hardcorefight.hangman.R;
+import dk.hardcorefight.hangman.Scoreboard.Scorelist;
+import lombok.NonNull;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PostGameFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PostGameFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class PostGameFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class PostGameFragment extends Fragment implements View.OnClickListener {
 
-    private OnFragmentInteractionListener mListener;
+    private static final String wonParameter = "WON";
+    private static final String amountWrongGuessesParameter = "WRONGGUESSES";
+    private static final String printingNameParamater = "PRINTINGNAME";
+
+    private boolean won;
+    private int amountWrongGuesses;
+    private String printingName;
+
+    private TextView postGameInfo;
+    private TextView postGameHighScoreView;
 
     public PostGameFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PostGameFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PostGameFragment newInstance(String param1, String param2) {
+
+    public static PostGameFragment newInstance(boolean won, int amountWrongGuesses, String printingName) {
         PostGameFragment fragment = new PostGameFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(PostGameFragment.wonParameter, won);
+        bundle.putInt(PostGameFragment.amountWrongGuessesParameter, amountWrongGuesses);
+        bundle.putString(PostGameFragment.printingNameParamater, printingName);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        if (this.getArguments() != null) {
+            this.won = this.getArguments().getBoolean(PostGameFragment.wonParameter);
+            this.amountWrongGuesses = this.getArguments().getInt(PostGameFragment.amountWrongGuessesParameter);
+            this.printingName = this.getArguments().getString(PostGameFragment.printingNameParamater);
         }
+
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post_game, container, false);
-    }
+    public View onCreateView(
+        @NonNull LayoutInflater inflater,
+        ViewGroup container,
+        Bundle savedInstanceState
+    ) {
+        View view = inflater.inflate(R.layout.fragment_post_game, container, false);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+        this.postGameInfo = view.findViewById(R.id.PostGameInfo);
+        this.postGameHighScoreView = view.findViewById(R.id.PostGameHighScoreView);
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (this.won) {
+            this.postGameInfo.setText(R.string.YouWon);
+
+            Scorelist scorelist = new Scorelist(this.getActivity());
+
+            if (
+                scorelist.sortedScores().isEmpty()
+                || this.amountWrongGuesses < scorelist.sortedScores().get(0)
+            ) {
+                try {
+                    scorelist.addScore(this.amountWrongGuesses).save();
+                } catch (IOException e) {
+                    Log.e("postgame", "cannot save highscore", e);
+                }
+                this.postGameHighScoreView.setVisibility(View.VISIBLE);
+                this.postGameHighScoreView.setText(
+                    this.getResources()
+                        .getString(
+                            R.string.NewHighscore,
+                            String.valueOf(this.amountWrongGuesses)
+                        )
+                );
+            }
+
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            this.postGameInfo.setText(
+                this.getResources()
+                    .getString(
+                        R.string.YouLost,
+                        this.printingName
+                    )
+            );
         }
+
+        view.findViewById(R.id.PostGameOk).setOnClickListener(this);
+
+        return view;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onClick(View view) {
+        Intent i = new Intent(this.getActivity(), MenuActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(i);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

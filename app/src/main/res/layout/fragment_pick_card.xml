@@ -40,7 +40,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/CardName"
+        android:hint="@string/CardName"
         app:layout_constraintEnd_toStartOf="@+id/SearchButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SelectRandomCardButton" />
