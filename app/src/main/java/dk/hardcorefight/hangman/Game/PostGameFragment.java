@@ -3,6 +3,7 @@ package dk.hardcorefight.hangman.Game;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.jinatonic.confetti.CommonConfetti;
+
 import java.io.IOException;
 
 import dk.hardcorefight.hangman.Menu.MenuActivity;
 import dk.hardcorefight.hangman.R;
 import dk.hardcorefight.hangman.Scoreboard.Scorelist;
+import dk.hardcorefight.hangman.Sound.SoundPlayer;
 import lombok.NonNull;
 
 
@@ -104,6 +108,16 @@ public class PostGameFragment extends Fragment implements View.OnClickListener {
         }
 
         view.findViewById(R.id.PostGameOk).setOnClickListener(this);
+
+        if (this.won) {
+            SoundPlayer.play(R.raw.success);
+            CommonConfetti.rainingConfetti(
+                container,
+                new int[] {Color.WHITE, Color.BLUE, Color.BLACK, Color.RED, Color.GREEN}
+            ).infinite();
+        } else {
+            SoundPlayer.play(R.raw.error);
+        }
 
         return view;
     }

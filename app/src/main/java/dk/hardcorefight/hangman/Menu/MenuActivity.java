@@ -8,6 +8,7 @@ import android.view.View;
 import dk.hardcorefight.hangman.Game.GameActivity;
 import dk.hardcorefight.hangman.R;
 import dk.hardcorefight.hangman.Scoreboard.ScoreboardActivity;
+import dk.hardcorefight.hangman.Sound.SoundPlayer;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -15,6 +16,8 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        SoundPlayer.init(this.getApplicationContext());
 
         findViewById(R.id.NewGameButton).setOnClickListener(
             new View.OnClickListener() {
